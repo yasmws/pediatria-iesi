@@ -3,11 +3,12 @@
 
 LAYOUT_WITH_LEGEND()
 
-title Sistema de Atendimento Pediátrico - Component Diagram
+title Diagrama de Componentes (C4) - Digitalização de Formulários (GAS)
 
 Person(recepcionista, "Recepcionista")
 Person(medico, "Profissional de Saúde")
-Person(paciente, "Paciente")
+
+System_Ext(aghu, "AGHU", "Sistema de Gestão Hospitalar")
 
 Container_Boundary(system, "Sistema de Atendimento") {
 
@@ -21,32 +22,31 @@ Container_Boundary(system, "Sistema de Atendimento") {
     Component(agendamento_service, "Agendamento Service", "Backend", "Gerencia marcação de consultas")
 
     Component(aghu_integration, "Integração AGHU", "API Client", "Comunicação com sistema hospitalar")
-    Component(whatsapp_integration, "Integração WhatsApp", "API Client", "Envio e confirmação de consultas")
 
     ComponentDb(db, "Banco de Dados", "Database", "Dados clínicos e pacientes")
 }
 
-System_Ext(aghu, "AGHU")
-
+' Relacionamentos dos Atores com as UIs
 Rel(recepcionista, ui_recepcao, "Usa")
 Rel(medico, ui_atendimento, "Usa")
 
-Rel(ui_atendimento, atendimento_service, "Envia dados")
+' Relacionamentos UIs -> Backend
+Rel(ui_atendimento, atendimento_service, "Envia dados do atendimento")
 Rel(ui_recepcao, agendamento_service, "Agenda consulta")
 
+' Orquestração do Atendimento
 Rel(atendimento_service, triagem_service, "Solicita triagem")
 Rel(atendimento_service, avaliacao_service, "Solicita avaliação")
 Rel(atendimento_service, encaminhamento_service, "Solicita encaminhamento")
+Rel(atendimento_service, aghu_integration, "Consulta/Envia prontuário")
 
+' Serviços -> Banco de Dados
 Rel(triagem_service, db, "Salva dados")
 Rel(avaliacao_service, db, "Salva avaliação")
 Rel(encaminhamento_service, db, "Registra encaminhamento")
-
-Rel(agendamento_service, whatsapp_integration, "Notifica")
 Rel(agendamento_service, db, "Salva agendamento")
 
-Rel(atendimento_service, aghu_integration, "Integra")
-Rel(aghu_integration, aghu, "API")
-
+' Integrações
+Rel(aghu_integration, aghu, "Lê histórico e salva prontuário via API")
 
 @enduml

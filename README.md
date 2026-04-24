@@ -3,7 +3,7 @@
 ## Grupo 8 - Desafio 6
 ### Ala da Pediatria (Formularios)
 
-Grupo: Yasmin Soares (ymws)  
+Grupo: mlmsp, nvgb, vox, ymws  
 Local e data: Recife, Abril de 2026
 
 ---
@@ -70,8 +70,6 @@ Prioridade principal: Disponibilidade e Tolerancia a Particao nas funcionalidade
 
 ---
 
-#TODO
-
 ## 3. Modelagem seguindo C4
 
 Referencia: https://c4model.com
@@ -109,3 +107,8 @@ diagramas_c4/nivel3
 - Falha persistente: enviar para DLQ e notificar equipe tecnica.
 - AGHU indisponivel: manter formularios em estado pendente e seguir capturando localmente.
 - Inconsistencia detectada: executar reconciliacao automatica e, se necessario, abrir tarefa manual de correção.
+
+## 5. Protótipo simples “vibe coded"
+
+
+[Protótipo Simples - V0 (Vibecoded)](https://v0-pediatric-clinical-app.vercel.app/)
