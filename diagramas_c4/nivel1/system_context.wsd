@@ -1,0 +1,26 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+' Configurações Visuais
+LAYOUT_WITH_LEGEND()
+title Diagrama de Contexto (C4) - Digitalização de Formulários (Pediatria)
+
+' Atores
+Person(profissional, "Profissional de Saúde", "Enfermeiros, Médicos e Técnicos que realizam o registro.")
+Person(gestor_ped, "Gestor Pediatria", "Analistas e gestores que monitoram indicadores e qualidade assistencial.")
+
+' Sistemas
+System(sistema_formularios, "Plataforma de Formulários Digitais", "Interface para coleta de dados estruturados e aplicação de protocolos clínicos.")
+
+' Sistemas Externos
+System_Ext(aghu, "AGHU", "Sistema de Gestão Hospitalar. Fonte primária de dados do paciente, leitos e prontuário.")
+System_Ext(bi_analytics, "Dashboard de Indicadores (BI)", "Transforma os dados estruturados em visão estratégica e alertas de desempenho.")
+
+' Relacionamentos
+Rel(profissional, sistema_formularios, "Preenche checklists e escalas assistenciais", "Computador")
+Rel_L(sistema_formularios, aghu, "Consulta dados do paciente e internação (via API/DB)", "JSON/SQL")
+Rel(sistema_formularios, bi_analytics, "Envia dados estruturados para análise", "ETL/API")
+Rel(gestor_ped, bi_analytics, "Monitora conformidade e indicadores de segurança", "Navegador")
+Rel(gestor_ped, sistema_formularios, "Gerencia e padroniza modelos de formulários", "Web")
+
+@enduml

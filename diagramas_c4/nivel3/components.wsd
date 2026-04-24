@@ -1,0 +1,52 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+
+title Sistema de Atendimento Pediátrico - Component Diagram
+
+Person(recepcionista, "Recepcionista")
+Person(medico, "Profissional de Saúde")
+Person(paciente, "Paciente")
+
+Container_Boundary(system, "Sistema de Atendimento") {
+
+    Component(ui_atendimento, "UI Atendimento", "Web App", "Tela para atendimento clínico")
+    Component(ui_recepcao, "UI Recepção", "Web App", "Check-in e agendamento")
+
+    Component(atendimento_service, "Atendimento Service", "Backend", "Orquestra o fluxo do atendimento")
+    Component(triagem_service, "Triagem Service", "Backend", "Anamnese e coleta de dados")
+    Component(avaliacao_service, "Avaliação Clínica", "Backend", "Cálculo IMC, curvas, etc")
+    Component(encaminhamento_service, "Encaminhamento Service", "Backend", "Encaminha para especialidades")
+    Component(agendamento_service, "Agendamento Service", "Backend", "Gerencia marcação de consultas")
+
+    Component(aghu_integration, "Integração AGHU", "API Client", "Comunicação com sistema hospitalar")
+    Component(whatsapp_integration, "Integração WhatsApp", "API Client", "Envio e confirmação de consultas")
+
+    ComponentDb(db, "Banco de Dados", "Database", "Dados clínicos e pacientes")
+}
+
+System_Ext(aghu, "AGHU")
+
+Rel(recepcionista, ui_recepcao, "Usa")
+Rel(medico, ui_atendimento, "Usa")
+
+Rel(ui_atendimento, atendimento_service, "Envia dados")
+Rel(ui_recepcao, agendamento_service, "Agenda consulta")
+
+Rel(atendimento_service, triagem_service, "Solicita triagem")
+Rel(atendimento_service, avaliacao_service, "Solicita avaliação")
+Rel(atendimento_service, encaminhamento_service, "Solicita encaminhamento")
+
+Rel(triagem_service, db, "Salva dados")
+Rel(avaliacao_service, db, "Salva avaliação")
+Rel(encaminhamento_service, db, "Registra encaminhamento")
+
+Rel(agendamento_service, whatsapp_integration, "Notifica")
+Rel(agendamento_service, db, "Salva agendamento")
+
+Rel(atendimento_service, aghu_integration, "Integra")
+Rel(aghu_integration, aghu, "API")
+
+
+@enduml

@@ -78,21 +78,15 @@ Referencia: https://c4model.com
 
 ### Nivel 1 - Contexto
 
-~~~mermaid 
 diagramas_c4/nivel1 
-~~~
 
 ### Nivel 2 - Containers
 
-~~~mermaid
 diagramas_c4/nivel2
-~~~
 
 ### Nivel 3 - Componentes
 
-~~~mermaid
 diagramas_c4/nivel3
-~~~
 
 ---
 
