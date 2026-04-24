@@ -1,0 +1,42 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Força o layout horizontal
+LAYOUT_LEFT_RIGHT()
+LAYOUT_WITH_LEGEND()
+
+title Recorte de Nível 2: Fluxo Horizontal e Detalhamento de Camadas (Pediatria)
+
+Person(recepcionista, "Recepcionista", "Gerencia o check-in e o fluxo de agendamento.")
+Person(medico, "Profissional de Saúde", "Realiza anamnese e define condutas clínicas.")
+
+System_Boundary(sistema_gas, "Sistema de Atendimento (Pediatria)") {
+    
+    Container(web_app, "Frontend Web (SPA)", "React/TypeScript", "Interface para coleta de dados e visualização de curvas de crescimento. Permite copy-paste de resumos para o AGHU.")
+    
+    Container_Boundary(fastapi_app, "Backend API (FastAPI)") {
+        Component(routers, "Roteadores", "FastAPI Routers", "Validação (Pydantic) e injeção de estratégia.")
+        Component(controllers, "Controllers", "Lógica de Negócio", "Cálculos de idade corrigida e marcos de desenvolvimento.")
+        Component(providers, "Providers", "Strategy Pattern", "Interface que alterna entre persistência local ou API.")
+    }
+    
+    ContainerDb(db_local, "Banco de Dados Local", "PostgreSQL", "Armazena dados estruturados e status das consultas.")
+}
+
+System_Ext(aghu, "Sistema AGHU", "Sistema legado. Recebe dados via API ou Copy-Paste.")
+
+' Relacionamentos de entrada (Esquerda para Direita)
+Rel(recepcionista, web_app, "Check-in")
+Rel(medico, web_app, "Atendimento")
+
+' Fluxo interno
+Rel_R(web_app, routers, "API Calls")
+Rel_R(routers, controllers, "Lógica")
+Rel_R(controllers, providers, "Dados")
+
+' Integrações e Persistência
+Rel_D(providers, db_local, "Persistência (Estratégia: postgres)")
+Rel_R(providers, aghu, "Integração (Estratégia: API)")
+Rel_U(web_app, aghu, "Manual (Copy-Paste)")
+
+@enduml
