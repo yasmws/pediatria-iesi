@@ -3,7 +3,7 @@
 ## Grupo 8 - Desafio 6
 ### Ala da Pediatria (Formularios)
 
-Grupo: mlmsp, nvgb, vox, ymws  
+Grupo: mlmsp, nvgb, vox, ymws, fsc3  
 Local e data: Recife, Abril de 2026
 
 ---
